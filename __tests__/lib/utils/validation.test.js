@@ -1,8 +1,8 @@
 import { Validator, Sanitizer, RateLimiter } from '@/lib/utils/validation'
 
-describe('Validator', () => {
+describe('验证器', () => {
   describe('isValidEmail', () => {
-    it('validates correct email addresses', () => {
+    it('验证正确的电子邮件地址', () => {
       const validEmails = [
         'test@example.com',
         'user.name@domain.co.uk',
@@ -15,7 +15,7 @@ describe('Validator', () => {
       })
     })
 
-    it('rejects invalid email addresses', () => {
+    it('拒绝无效的电子邮件地址', () => {
       const invalidEmails = [
         'invalid-email',
         '@example.com',
@@ -33,7 +33,7 @@ describe('Validator', () => {
   })
 
   describe('isValidUrl', () => {
-    it('validates correct URLs', () => {
+    it('验证正确的 URL', () => {
       const validUrls = [
         'https://example.com',
         'http://test.org',
@@ -46,7 +46,7 @@ describe('Validator', () => {
       })
     })
 
-    it('rejects invalid URLs', () => {
+    it('拒绝无效的 URL', () => {
       const invalidUrls = [
         'not-a-url',
         'ftp://example.com',
@@ -63,7 +63,7 @@ describe('Validator', () => {
   })
 
   describe('isValidSlug', () => {
-    it('validates correct slugs', () => {
+    it('验证正确的 slug', () => {
       const validSlugs = [
         'hello-world',
         'test-post-123',
@@ -76,7 +76,7 @@ describe('Validator', () => {
       })
     })
 
-    it('rejects invalid slugs', () => {
+    it('拒绝无效的 slug', () => {
       const invalidSlugs = [
         'Hello World',
         'test_post',
@@ -94,7 +94,7 @@ describe('Validator', () => {
   })
 
   describe('isValidNotionId', () => {
-    it('validates correct Notion IDs', () => {
+    it('验证正确的 Notion ID', () => {
       const validIds = [
         '123e4567-e89b-12d3-a456-426614174000',
         '123e4567e89b12d3a456426614174000',
@@ -106,7 +106,7 @@ describe('Validator', () => {
       })
     })
 
-    it('rejects invalid Notion IDs', () => {
+    it('拒绝无效的 Notion ID', () => {
       const invalidIds = [
         'not-a-uuid',
         '123-456-789',
@@ -122,13 +122,13 @@ describe('Validator', () => {
   })
 
   describe('isValidLength', () => {
-    it('validates string length correctly', () => {
+    it('正确验证字符串长度', () => {
       expect(Validator.isValidLength('hello', 1, 10)).toBe(true)
       expect(Validator.isValidLength('test', 4, 4)).toBe(true)
       expect(Validator.isValidLength('', 0, 5)).toBe(true)
     })
 
-    it('rejects strings outside length range', () => {
+    it('拒绝超出长度范围的字符串', () => {
       expect(Validator.isValidLength('hello', 10, 20)).toBe(false)
       expect(Validator.isValidLength('very long string', 1, 5)).toBe(false)
       expect(Validator.isValidLength('test', 5, 10)).toBe(false)
@@ -136,13 +136,13 @@ describe('Validator', () => {
   })
 
   describe('isValidNumber', () => {
-    it('validates numbers in range', () => {
+    it('验证范围内的数字', () => {
       expect(Validator.isValidNumber(5, 1, 10)).toBe(true)
       expect(Validator.isValidNumber(0, 0, 0)).toBe(true)
       expect(Validator.isValidNumber(-5, -10, 0)).toBe(true)
     })
 
-    it('rejects numbers outside range', () => {
+    it('拒绝范围外的数字', () => {
       expect(Validator.isValidNumber(15, 1, 10)).toBe(false)
       expect(Validator.isValidNumber(-5, 0, 10)).toBe(false)
       expect(Validator.isValidNumber(NaN, 1, 10)).toBe(false)
@@ -150,15 +150,15 @@ describe('Validator', () => {
   })
 })
 
-describe('Sanitizer', () => {
+describe('净化器', () => {
   describe('stripHtml', () => {
-    it('removes HTML tags', () => {
+    it('移除 HTML 标签', () => {
       expect(Sanitizer.stripHtml('<p>Hello <b>world</b></p>')).toBe('Hello world')
       expect(Sanitizer.stripHtml('<script>alert(1)</script>')).toBe('alert(1)')
       expect(Sanitizer.stripHtml('No HTML here')).toBe('No HTML here')
     })
 
-    it('handles empty or null input', () => {
+    it('处理空输入或 null 输入', () => {
       expect(Sanitizer.stripHtml('')).toBe('')
       expect(Sanitizer.stripHtml(null)).toBe('')
       expect(Sanitizer.stripHtml(undefined)).toBe('')
@@ -166,35 +166,35 @@ describe('Sanitizer', () => {
   })
 
   describe('sanitizeXss', () => {
-    it('removes XSS patterns', () => {
+    it('移除 XSS 模式', () => {
       expect(Sanitizer.sanitizeXss('<script>alert(1)</script>')).toBe('')
       expect(Sanitizer.sanitizeXss('<iframe src="evil.com"></iframe>')).toBe('')
       expect(Sanitizer.sanitizeXss('javascript:alert(1)')).toBe('')
     })
 
-    it('preserves safe content', () => {
+    it('保留安全内容', () => {
       expect(Sanitizer.sanitizeXss('Hello world')).toBe('Hello world')
       expect(Sanitizer.sanitizeXss('Safe text content')).toBe('Safe text content')
     })
   })
 
   describe('sanitizeFilename', () => {
-    it('removes illegal characters', () => {
+    it('移除非法字符', () => {
       expect(Sanitizer.sanitizeFilename('file<name>.txt')).toBe('filename.txt')
       expect(Sanitizer.sanitizeFilename('file|name?.txt')).toBe('filename.txt')
     })
 
-    it('replaces spaces with underscores', () => {
+    it('将空格替换为下划线', () => {
       expect(Sanitizer.sanitizeFilename('my file name.txt')).toBe('my_file_name.txt')
     })
 
-    it('removes leading and trailing dots', () => {
+    it('移除首尾的点号', () => {
       expect(Sanitizer.sanitizeFilename('...filename...')).toBe('filename')
     })
   })
 
   describe('escapeHtml', () => {
-    it('escapes HTML entities', () => {
+    it('转义 HTML 实体', () => {
       expect(Sanitizer.escapeHtml('<script>')).toBe('&lt;script&gt;')
       expect(Sanitizer.escapeHtml('Tom & Jerry')).toBe('Tom &amp; Jerry')
       expect(Sanitizer.escapeHtml('"Hello"')).toBe('&quot;Hello&quot;')
@@ -202,7 +202,7 @@ describe('Sanitizer', () => {
   })
 })
 
-describe('RateLimiter', () => {
+describe('速率限制器', () => {
   let rateLimiter
 
   beforeEach(() => {
@@ -214,48 +214,48 @@ describe('RateLimiter', () => {
     jest.useRealTimers()
   })
 
-  it('allows requests within limit', () => {
+  it('允许在限制范围内的请求', () => {
     expect(rateLimiter.isRateLimited('user1', 5, 60000)).toBe(false)
     expect(rateLimiter.isRateLimited('user1', 5, 60000)).toBe(false)
     expect(rateLimiter.isRateLimited('user1', 5, 60000)).toBe(false)
   })
 
-  it('blocks requests over limit', () => {
-    // Make 5 requests (limit)
+  it('阻止超出限制的请求', () => {
+    // 发出 5 次请求（达到限制）
     for (let i = 0; i < 5; i++) {
       expect(rateLimiter.isRateLimited('user1', 5, 60000)).toBe(false)
     }
     
-    // 6th request should be blocked
+    // 第 6 次请求应被阻止
     expect(rateLimiter.isRateLimited('user1', 5, 60000)).toBe(true)
   })
 
-  it('resets after time window', () => {
-    // Make 5 requests
+  it('在时间窗口结束后重置', () => {
+    // 发出 5 次请求
     for (let i = 0; i < 5; i++) {
       rateLimiter.isRateLimited('user1', 5, 60000)
     }
     
-    // Should be blocked
+    // 应被阻止
     expect(rateLimiter.isRateLimited('user1', 5, 60000)).toBe(true)
     
-    // Advance time past window
+    // 推进时间超过窗口
     jest.advanceTimersByTime(61000)
     
-    // Should be allowed again
+    // 应再次允许
     expect(rateLimiter.isRateLimited('user1', 5, 60000)).toBe(false)
   })
 
-  it('handles different users separately', () => {
-    // User1 makes 5 requests
+  it('为不同用户分别处理', () => {
+    // 用户1 发出 5 次请求
     for (let i = 0; i < 5; i++) {
       rateLimiter.isRateLimited('user1', 5, 60000)
     }
     
-    // User1 should be blocked
+    // 用户1 应被阻止
     expect(rateLimiter.isRateLimited('user1', 5, 60000)).toBe(true)
     
-    // User2 should still be allowed
+    // 用户2 仍应被允许
     expect(rateLimiter.isRateLimited('user2', 5, 60000)).toBe(false)
   })
 })
