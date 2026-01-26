@@ -1,13 +1,12 @@
-# For most projects, this workflow file will not need changing; you simply need
-# to commit it to your repository.
+# 对于大多数项目，此工作流文件无需修改；您只需
+# 将其提交到仓库即可。
 #
-# You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom queries or build logic.
+# 您可以根据需要修改此文件，以覆盖要分析的语言集合，
+# 或者提供自定义查询或构建逻辑。
 #
-# ******** NOTE ********
-# We have attempted to detect the languages in your repository. Please check
-# the `language` matrix defined below to confirm you have the correct set of
-# supported CodeQL languages.
+# ******** 注意 ********
+# 我们已经尝试检测您仓库中的语言。请检查下面定义的
+# `language` 矩阵，确认是否包含正确的 CodeQL 支持语言集合。
 #
 name: "CodeQL"
 
@@ -21,19 +20,19 @@ on:
 
 jobs:
   analyze:
-    name: Analyze
-    # Runner size impacts CodeQL analysis time. To learn more, please see:
+    name: 分析
+    # 运行器大小会影响 CodeQL 分析时间。了解更多信息，请参阅：
     #   - https://gh.io/recommended-hardware-resources-for-running-codeql
     #   - https://gh.io/supported-runners-and-hardware-resources
     #   - https://gh.io/using-larger-runners
-    # Consider using larger runners for possible analysis time improvements.
+    # 建议使用更大的运行器以缩短分析时间。
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
     permissions:
-      # required for all workflows
+      # 所有工作流都需要
       security-events: write
 
-      # only required for workflows in private repositories
+      # 仅私有仓库的工作流需要
       actions: read
       contents: read
 
@@ -41,44 +40,44 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'javascript-typescript' ]
-        # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
-        # Use only 'java-kotlin' to analyze code written in Java, Kotlin or both
-        # Use only 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
-        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
+        # CodeQL 支持的语言： [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
+        # 仅使用 'java-kotlin' 可分析 Java、Kotlin 或两者混合的代码
+        # 仅使用 'javascript-typescript' 可分析 JavaScript、TypeScript 或两者混合的代码
+        # 了解更多 CodeQL 语言支持信息：https://aka.ms/codeql-docs/language-support
 
     steps:
-    - name: Checkout repository
+    - name: 检出仓库
       uses: actions/checkout@v4
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
+    # 初始化 CodeQL 扫描工具
+    - name: 初始化 CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
+        # 如果需要指定自定义查询，可以在此处或配置文件中添加
+        # 默认情况下，此处列出的查询会覆盖配置文件中的查询
+        # 在列表前加 "+" 可同时使用此处查询和配置文件中的查询
 
-        # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+        # 更多查询包信息请参考：https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
 
-    # Autobuild attempts to build any compiled languages (C/C++, C#, Go, Java, or Swift).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
+    # 自动构建尝试编译型语言（C/C++、C#、Go、Java 或 Swift）
+    # 如果此步骤失败，请删除它并手动执行构建（见下方注释）
+    - name: 自动构建
       uses: github/codeql-action/autobuild@v3
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+    # ℹ️ 使用系统 shell 执行的命令行程序
+    # 📚 参考文档：https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
 
-    #   If the Autobuild fails above, remove it and uncomment the following three lines.
-    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+    #   如果上面的自动构建失败，请删除该步骤并取消下方注释
+    #   根据项目实际情况修改或添加构建命令（参考示例）
 
     # - run: |
-    #     echo "Run, Build Application using script"
+    #     echo "使用脚本运行并构建应用程序"
     #     ./location_of_script_within_repo/buildscript.sh
 
-    - name: Perform CodeQL Analysis
+    - name: 执行 CodeQL 分析
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
