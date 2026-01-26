@@ -67,6 +67,11 @@ const BLOG = {
     process.env.NEXT_PUBLIC_GREETING_WORDS ||
     'Hi，我是一个程序员, Hi，我是一个人, Hi，我就是一个人,Hi，我只是一个人,有来看我的人吗🎉',
 
+  // 社交链接，不需要可留空白，例如 CONTACT_WEIBO:''
+  CONTACT_EMAIL: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'isngr@live.com', // 邮箱地址 例如mail@tangly1024.com
+  CONTACT_GITHUB: process.env.NEXT_PUBLIC_CONTACT_GITHUB || 'https://github.com/isngr', // 你的github个人主页 例如 https://github.com/tangly1024
+  CONTACT_QQ: process.env.NEXT_PUBLIC_CONTACT_QQ || '136530240', // 你的QQ号 例如 10241234
+  
   // uuid重定向至 slug
   UUID_REDIRECT: process.env.UUID_REDIRECT || false
 }
