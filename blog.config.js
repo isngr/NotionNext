@@ -70,7 +70,7 @@ CONTACT_QQ: process.env.NEXT_PUBLIC_CONTACT_QQ || '136530240', // 你的QQ号 �
   // 欢迎语打字效果,Hexo,Matery主题支持, 英文逗号隔开多个欢迎语。
   GREETING_WORDS:
     process。env.NEXT_PUBLIC_GREETING_WORDS ||
-    'Hi，我是一个人, Hi，我就是一个人,Hi，我只是一个人,有来看我的人吗。🎉'，
+    'Hi，我是一个人, Hi，我就是一个人,Hi，我只是一个人,有来看我的人吗。🎉',
 
   // uuid重定向至 slug
   UUID_REDIRECT: process.env.UUID_REDIRECT || false
