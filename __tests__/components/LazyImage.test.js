@@ -10,7 +10,7 @@ mockIntersectionObserver.mockReturnValue({
 })
 window.IntersectionObserver = mockIntersectionObserver
 
-describe('LazyImage Component', () => {
+describe('懒加载图片组件', () => {
   const defaultProps = {
     src: '/test-image.jpg',
     alt: 'Test image'
@@ -20,7 +20,7 @@ describe('LazyImage Component', () => {
     mockIntersectionObserver.mockClear()
   })
 
-  it('renders with required props', () => {
+  it('使用必需属性正确渲染', () => {
     render(<LazyImage {...defaultProps} />)
     
     const image = screen.getByAltText('Test image')
@@ -28,7 +28,7 @@ describe('LazyImage Component', () => {
     expect(image).toHaveAttribute('alt', 'Test image')
   })
 
-  it('applies custom className', () => {
+  it('应用自定义 className', () => {
     const customClass = 'custom-image-class'
     render(<LazyImage {...defaultProps} className={customClass} />)
     
@@ -36,7 +36,7 @@ describe('LazyImage Component', () => {
     expect(image).toHaveClass(customClass)
   })
 
-  it('sets width and height attributes', () => {
+  it('设置 width 和 height 属性', () => {
     render(
       <LazyImage 
         {...defaultProps} 
@@ -50,21 +50,21 @@ describe('LazyImage Component', () => {
     expect(image).toHaveAttribute('height', '200')
   })
 
-  it('handles priority loading', () => {
+  it('处理优先加载（priority）', () => {
     render(<LazyImage {...defaultProps} priority />)
     
     const image = screen.getByAltText('Test image')
     expect(image).toHaveAttribute('loading', 'eager')
   })
 
-  it('uses lazy loading by default', () => {
+  it('默认使用懒加载', () => {
     render(<LazyImage {...defaultProps} />)
     
     const image = screen.getByAltText('Test image')
     expect(image).toHaveAttribute('loading', 'lazy')
   })
 
-  it('handles click events', () => {
+  it('处理点击事件', () => {
     const handleClick = jest.fn()
     render(<LazyImage {...defaultProps} onClick={handleClick} />)
     
@@ -74,26 +74,26 @@ describe('LazyImage Component', () => {
     expect(handleClick).toHaveBeenCalledTimes(1)
   })
 
-  it('sets up IntersectionObserver when not priority', () => {
+  it('非优先加载时设置 IntersectionObserver', () => {
     render(<LazyImage {...defaultProps} />)
     
     expect(mockIntersectionObserver).toHaveBeenCalled()
   })
 
-  it('does not set up IntersectionObserver for priority images', () => {
+  it('优先加载图片不设置 IntersectionObserver', () => {
     render(<LazyImage {...defaultProps} priority />)
     
-    // Priority images should load immediately without IntersectionObserver
+    // 优先加载图片应立即加载，不使用 IntersectionObserver
     expect(mockIntersectionObserver).not.toHaveBeenCalled()
   })
 
-  it('handles load event', async () => {
+  it('处理 load 事件', async () => {
     const handleLoad = jest.fn()
     render(<LazyImage {...defaultProps} onLoad={handleLoad} />)
     
     const image = screen.getByAltText('Test image')
     
-    // Simulate image load
+    // 模拟图片加载完成
     Object.defineProperty(image, 'complete', { value: true })
     image.dispatchEvent(new Event('load'))
     
@@ -102,33 +102,33 @@ describe('LazyImage Component', () => {
     })
   })
 
-  it('handles error gracefully', () => {
+  it('优雅处理加载错误', () => {
     render(<LazyImage {...defaultProps} />)
     
     const image = screen.getByAltText('Test image')
     
-    // Simulate image error
+    // 模拟图片加载错误
     image.dispatchEvent(new Event('error'))
     
-    // Component should still be in the document
+    // 组件仍应存在于文档中
     expect(image).toBeInTheDocument()
   })
 
-  it('applies correct decoding attribute', () => {
+  it('应用正确的 decoding 属性', () => {
     render(<LazyImage {...defaultProps} />)
     
     const image = screen.getByAltText('Test image')
     expect(image).toHaveAttribute('decoding', 'async')
   })
 
-  it('handles missing src gracefully', () => {
+  it('优雅处理缺少 src 的情况', () => {
     render(<LazyImage alt="Test image" />)
     
     const image = screen.getByAltText('Test image')
     expect(image).toBeInTheDocument()
   })
 
-  it('applies custom styles', () => {
+  it('应用自定义样式', () => {
     const customStyle = { border: '1px solid red' }
     render(<LazyImage {...defaultProps} style={customStyle} />)
     
