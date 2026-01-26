@@ -77,4 +77,3 @@ const BLOG = {
 }
 
 module.exports = BLOG
-LINK: process.env.NEXT_PUBLIC_LINK || 'https://isn.us.ci', // 网站地址
